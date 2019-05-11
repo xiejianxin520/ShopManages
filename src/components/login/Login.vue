@@ -57,11 +57,13 @@ export default {
     // 登录功能的实现
     login() {
       axios.post('http://localhost:8888/api/private/v1/login', this.ruleForm).then(res => {
-        console.log(res)
+        console.log(res.data)
         const data = res.data.data
         const meta = res.data.meta
         if (meta.status === 200) {
           // alert('登录成功')
+          // 将登录成功的标识（token）存储到localStorage中
+          localStorage.setItem('token',data.token)
           this.$router.push('/home')
         } else {
           // alert(meta.msg)

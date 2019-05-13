@@ -23,32 +23,35 @@
         如果要给菜单添加 小图标，应该使用 template 来包裹整个内容
               -->
       <el-aside width="200px">
-        <el-menu default-active="1-2" class="el-menu-vertical-demo" @open="handleOpen" @close="handleClose" background-color="#545c64" text-color="#fff" active-text-color="#ffd04b">
+        <!-- 开启路由配置 -->
+        <el-menu :router='true' default-active="1-2" class="el-menu-vertical-demo" @open="handleOpen" @close="handleClose" background-color="#545c64" text-color="#fff" active-text-color="#ffd04b">
           <el-submenu index="1">
             <template slot="title">
               <i class="el-icon-location"></i>
-              <span>导航一</span>
+              <span>用户管理</span>
             </template>
-            <el-menu-item index="1-1">
+            <!-- 启用路由模式后，index就相当于 原来 router-link 中的to属性，用来指定导航的路径（哈希值） -->
+            <!-- 可以使用 /home/users 或者 home/users -->
+            <el-menu-item index="/home/user">
               <template slot="title">
-                <i class="el-icon-s-grid"></i>
-                <span>选项1</span>
+                <i class="el-icon-menu"></i>
+                <span>用户列表</span>
               </template>
             </el-menu-item>
-            <el-menu-item index="1-2">选项2</el-menu-item>
           </el-submenu>
           <!-- 第二个菜单，index唯一 -->
           <el-submenu index="2">
             <template slot="title">
-              <i class="el-icon-s-grid"></i>
-              <span>导航一</span>
+              <i class="el-icon-location"></i>
+              <span>用户管理</span>
             </template>
-            <el-menu-item index="2-1">选项1</el-menu-item>
-            <el-menu-item index="2-2">选项2</el-menu-item>
+            <el-menu-item index="2-1">用户列表</el-menu-item>
           </el-submenu>
         </el-menu>
       </el-aside>
-      <el-main>Main</el-main>
+      <el-main>
+        <router-view></router-view>
+      </el-main>
     </el-container>
   </el-container>
 </template>
@@ -79,10 +82,10 @@ export default {
         })
     },
     handleOpen(key, keyPath) {
-      console.log(key, keyPath)
+      console.log('open', key, keyPath)
     },
     handleClose(key, keyPath) {
-      console.log(key, keyPath)
+      console.log('close', key, keyPath)
     }
   },
   components: {}

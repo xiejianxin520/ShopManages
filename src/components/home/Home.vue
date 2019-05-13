@@ -1,7 +1,56 @@
 <template>
-  <div>
-    home
-  </div>
+  <el-container class="home-wrapper">
+    <el-header>
+      <el-col :span="8" class='logo'>
+        <img src="@/assets/hanxin.jpg" alt="">
+      </el-col>
+      <el-col :span="8">
+        <h1 class="title">电商后台管理系统</h1>
+      </el-col>
+      <el-col :span="8">
+        <div class="welcome">
+          <span>欢迎瀚信会员</span>
+          <a href="javascript:;" @click.prevent="logout">退出 </a>
+        </div>
+      </el-col>
+    </el-header>
+    <el-container>
+      <!-- 侧边栏 -->
+      <!-- default-active 当前激活菜单的 index 值
+        el-sub-menu 表示一组菜单
+        index 是唯一的，不能重复！！!!!!!!
+        template: 用来包裹一级菜单，内部指定菜单的图标和菜单名
+        如果要给菜单添加 小图标，应该使用 template 来包裹整个内容
+              -->
+      <el-aside width="200px">
+        <el-menu default-active="1-2" class="el-menu-vertical-demo" @open="handleOpen" @close="handleClose" background-color="#545c64" text-color="#fff" active-text-color="#ffd04b">
+          <el-submenu index="1">
+            <template slot="title">
+              <i class="el-icon-location"></i>
+              <span>导航一</span>
+            </template>
+            <el-menu-item index="1-1">
+              <template slot="title">
+                <i class="el-icon-s-grid"></i>
+                <span>选项1</span>
+              </template>
+            </el-menu-item>
+            <el-menu-item index="1-2">选项2</el-menu-item>
+          </el-submenu>
+          <!-- 第二个菜单，index唯一 -->
+          <el-submenu index="2">
+            <template slot="title">
+              <i class="el-icon-s-grid"></i>
+              <span>导航一</span>
+            </template>
+            <el-menu-item index="2-1">选项1</el-menu-item>
+            <el-menu-item index="2-2">选项2</el-menu-item>
+          </el-submenu>
+        </el-menu>
+      </el-aside>
+      <el-main>Main</el-main>
+    </el-container>
+  </el-container>
 </template>
 
 <script>
@@ -10,9 +59,95 @@ export default {
   data() {
     return {}
   },
+  methods: {
+    logout() {
+      this.$confirm('您是否确认退出?', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      })
+        .then(() => {
+          localStorage.removeItem('token')
+          this.$router.push('/login')
+        })
+        .catch(() => {
+          this.$message({
+            type: 'info',
+            message: '已取消退出',
+            duration: 1000 //显示1秒
+          })
+        })
+    },
+    handleOpen(key, keyPath) {
+      console.log(key, keyPath)
+    },
+    handleClose(key, keyPath) {
+      console.log(key, keyPath)
+    }
+  },
   components: {}
 }
 </script>
 
-<style>
+<style scope lang="less">
+.home-wrapper {
+  height: 100%;
+
+  .el-header {
+    padding: 0;
+    background-color: white;
+    border: 1px dotted rgb(113, 201, 13);
+    text-align: center;
+    .logo {
+      text-align: left;
+    }
+
+    .title {
+      margin: 0;
+      line-height: 60px;
+      color: black;
+      font-size: 36px;
+    }
+
+    img {
+      height: 52px;
+      width: 100px;
+    }
+    .welcome {
+      line-height: 60px;
+      font-weight: bold;
+      text-align: right;
+      padding-right: 30px;
+
+      a {
+        color: #b07a17;
+        text-decoration: none;
+      }
+    }
+  }
+
+  .el-aside {
+    background-color: #d3dce6;
+    color: #333;
+    line-height: 200px;
+
+    .el-menu-vertical-demo {
+      height: 100%;
+    }
+  }
+
+  .el-main {
+    background-color: #e9eef3;
+    color: #333;
+  }
+
+  .el-container:nth-child(5) .el-aside,
+  .el-container:nth-child(6) .el-aside {
+    line-height: 260px;
+  }
+
+  .el-container:nth-child(7) .el-aside {
+    line-height: 320px;
+  }
+}
 </style>

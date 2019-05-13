@@ -7,16 +7,17 @@ Vue.use(Router)
 
 const router = new Router({
   routes: [{
-      path: '/login',
-      name: 'Login',
-      component: Login
-    },
-    {
-      path: '/home',
-      name: 'Home',
-      component: Home
-    }
-  ]
+    path: '/login',
+    name: 'Login',
+    component: Login
+  }, {
+    path: '/',
+    redirect: '/login'
+  }, {
+    path: '/home',
+    name: 'Home',
+    component: Home
+  }]
 });
 
 router.beforeEach((to, from, next) => {

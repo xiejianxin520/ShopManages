@@ -25,8 +25,6 @@
 </template>
 
 <script>
-import axios from 'axios'
-
 export default {
   name: 'User',
   data() {
@@ -39,16 +37,16 @@ export default {
   },
   methods: {
     getUserList() {
-      axios
-        .get('http://localhost:8888/api/private/v1/users', {
+      this.$http
+        .get('/users', {
           params: {
             pagenum: 1, // 当前页
             pagesize: 3 // 每页展示多少条数据
-          },
-          headers: { Authorization: localStorage.getItem('token') } // 将 token 作为请求头，传递给服务器接口这样，才能正确的调用这个接口
+          }
+          // headers: { Authorization: localStorage.getItem('token') } // 将 token 作为请求头，传递给服务器接口这样，才能正确的调用这个接口
         })
         .then(res => {
-          console.log(res)
+          console.log('USER返回数据', res)
           // const { data, meta } = res.data
           const data = res.data.data
           const meta = res.data.meta

@@ -16,7 +16,8 @@
     </el-header>
     <el-container>
       <!-- 侧边栏 -->
-      <!-- default-active 当前激活菜单的 index 值
+      <!-- 
+        default-active 当前激活菜单的 index 值
         el-sub-menu 表示一组菜单
         index 是唯一的，不能重复！！!!!!!!
         template: 用来包裹一级菜单，内部指定菜单的图标和菜单名
@@ -24,7 +25,7 @@
               -->
       <el-aside width="200px">
         <!-- 开启路由配置 -->
-        <el-menu :router='true' default-active="1-2" class="el-menu-vertical-demo" @open="handleOpen" @close="handleClose" background-color="#545c64" text-color="#fff" active-text-color="#ffd04b">
+        <el-menu :router='true' default-active="/home/user" class="el-menu-vertical-demo" @open="handleOpen" @close="handleClose" background-color="#545c64" text-color="#fff" active-text-color="#ffd04b">
           <el-submenu index="1">
             <template slot="title">
               <i class="el-icon-location"></i>

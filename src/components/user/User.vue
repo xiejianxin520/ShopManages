@@ -25,7 +25,7 @@
         </el-input>
       </el-col>
       <el-col :span="4">
-        <el-button type="success" plain>成功按钮</el-button>
+        <el-button type="success" plain @click="dialogFormVisible = true">添加用户</el-button>
       </el-col>
     </el-row>
 
@@ -53,6 +53,29 @@
     <!-- //分页    layout 分页显示的内容 给 current-page 属性添加 .sync 修饰符后, 就可以设置当前页-->
     <el-pagination background layout="prev, pager, next" :total="total" :pageSize='pageSize' :current-page.sync="curPage" @current-change='currentChange'>
     </el-pagination>
+
+    <!-- 添加用户对话框 -->
+    <el-dialog title="收货地址" :visible.sync="dialogFormVisible" @close="closeUserAdd">
+      <el-form :model="userAddForm" :rules="userAddRules" ref="userAddForm">
+        <el-form-item prop="username" label="用户名" label-width="120px">
+          <el-input v-model="userAddForm.username" autocomplete="off"></el-input>
+        </el-form-item>
+        <el-form-item prop="password" label="密码" label-width="120px">
+          <el-input v-model="userAddForm.password" autocomplete="off" show-password></el-input>
+        </el-form-item>
+        <el-form-item prop="email" label="邮箱" label-width="120px">
+          <el-input v-model="userAddForm.email" autocomplete="off"></el-input>
+        </el-form-item>
+        <el-form-item prop="mobile" label="手机" label-width="120px">
+          <el-input v-model="userAddForm.mobile" autocomplete="off"></el-input>
+        </el-form-item>
+      </el-form>
+      <div slot="footer" class="dialog-footer">
+        <el-button @click="dialogFormVisible = false">取 消</el-button>
+        <el-button type="primary" @click="addUser">确 定</el-button>
+      </div>
+    </el-dialog>
+
   </div>
 </template>
 
@@ -66,7 +89,25 @@ export default {
       pageSize: 3, // 每页条数
       total: 10, // 总条数
       curPage: 2, // 当前页
-      queryStr: ''
+      queryStr: '',
+      dialogFormVisible: false, //默认增加用户弹框关闭
+      userAddForm: {
+        username: '',
+        password: '',
+        email: '',
+        mobile: ''
+      },
+      userAddRules: {
+        //添加用户规则
+        username: [
+          { required: true, message: '用户名为必填项', trigger: 'blur' },
+          { min: 3, max: 5, message: '长度在 3 到 6 个字符', trigger: 'blur' }
+        ],
+        password: [
+          { required: true, message: '密码为必填项', trigger: 'blur' },
+          { min: 3, max: 6, message: '长度在 3 到 6 个字符', trigger: 'blur' }
+        ]
+      }
     }
   },
   created() {
@@ -110,7 +151,7 @@ export default {
     //开关禁用客户
     switchChange(id, curState) {
       // console.log(b)
-      this.$http.put(`/users/${ssss}/state/${curState}`).then(res => {
+      this.$http.put(`/users/${id}/state/${curState}`).then(res => {
         console.log('开关禁用客户', res)
         const { data, meta } = res.data
         if (meta.status === 200) {
@@ -127,6 +168,25 @@ export default {
           })
         }
       })
+    },
+    //添加用户
+    addUser() {
+      this.$refs.userAddForm.validate(valid => {
+        if (valid) {
+          console.log('验证成功')
+        } else {
+          console.log('验证失败')
+          this.$message({
+            type: 'error',
+            message: '验证失败',
+            duration: 1000 //显示1秒
+          })
+        }
+      })
+    },
+    //关闭用户自动清空内容
+    closeUserAdd() {
+      this.$refs.userAddForm.resetFields()
     }
   },
   components: {}

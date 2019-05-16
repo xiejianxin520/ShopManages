@@ -38,10 +38,11 @@ export default {
         username: '',
         password: ''
       },
+      //添加用户规则
+      // required 是否为必填项
+      // message 当前规则校验失败时的提示
+      // trigger 表单验证的触发实际，blur表示失去焦点时触发
       rules: {
-        // required 是否为必填项
-        // message 当前规则校验失败时的提示
-        // trigger 表单验证的触发实际，blur表示失去焦点时触发
         username: [
           { required: true, message: '用户名为必填项', trigger: 'blur' },
           { min: 3, max: 5, message: '长度在 3 到 5 个字符', trigger: 'blur' }
@@ -63,7 +64,7 @@ export default {
         if (meta.status === 200) {
           // alert('登录成功')
           // 将登录成功的标识（token）存储到localStorage中
-          localStorage.setItem('token',data.token)
+          localStorage.setItem('token', data.token)
           this.$router.push('/home')
         } else {
           // alert(meta.msg)
@@ -80,8 +81,9 @@ export default {
     // this.$refs.loginForm
     // valid 表示是否校验成功，如果成功就为：true
     // 如果失败就为：false
-    submitForm(formName) {
-      this.$refs[formName].validate(valid => {
+    submitForm(b) {
+      // this.$refs.loginForm
+      this.$refs[b].validate(valid => {
         if (valid) {
           this.login()
         } else {

@@ -20,7 +20,7 @@
 
 
 ## 1 登录功能
-1.利用element-ui中的表单验证功能验证是否符合登陆规则
+1.利用element-ui中的表单验证功能验证是否符合登陆规则 :rules="rules" ref="ruleForm" 
 2.使用 axios 根据接口文档来发送请求，完成登录
 2.this.$router.push('/home')
 3.将登录成功的标识（token）存储到localStorage中
@@ -60,3 +60,13 @@ axios.defaults.baseURL = 'http://localhost:8888/api/private/v1'
 1.利用element-ui设置表格和布局
 ## 2.分页功能
 ## 3.启用或禁用用户
+
+###4 打开添加用户对话框的步骤
+
+- 1 给添加用户按钮绑定单击事件，事件中让控制对话框展示的数据为 true
+- 2 在 dialog 对话框中添加一个 form 表单
+  - form 表单的数据（userAddForm）
+  - form 表单的验证规则（userAddRules）， :rules="userAddRules" ref="userAddForm"
+  
+- 3 点击用户添加对话框中的确定按钮，进行表单验证（this.$refs.userAddForm.validate...）
+- 4 点击取消按钮，重置表单内容（this.$refs.userAddForm.resetFields()

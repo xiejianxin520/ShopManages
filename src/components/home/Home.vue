@@ -1,18 +1,20 @@
 <template>
   <el-container class="home-wrapper">
     <el-header>
-      <el-col :span="8" class='logo'>
-        <img src="@/assets/hanxin.jpg" alt="">
-      </el-col>
-      <el-col :span="8">
-        <h1 class="title">电商后台管理系统</h1>
-      </el-col>
-      <el-col :span="8">
-        <div class="welcome">
-          <span>欢迎瀚信会员</span>
-          <a href="javascript:;" @click.prevent="logout">退出 </a>
-        </div>
-      </el-col>
+      <el-row>
+        <el-col :span="8" class='logo'>
+          <img src="@/assets/hanxin.jpg" alt="">
+        </el-col>
+        <el-col :span="8">
+          <h1 class="title">电商后台管理系统</h1>
+        </el-col>
+        <el-col :span="8">
+          <div class="welcome">
+            <span>欢迎瀚信会员</span>
+            <a href="javascript:;" @click.prevent="logout">退出 </a>
+          </div>
+        </el-col>
+      </el-row>
     </el-header>
     <el-container>
       <!-- 侧边栏 -->
@@ -23,7 +25,7 @@
         template: 用来包裹一级菜单，内部指定菜单的图标和菜单名
         如果要给菜单添加 小图标，应该使用 template 来包裹整个内容
               -->
-      <el-aside width="200px">
+      <el-aside style="width:150px;height:100%">
         <!-- 开启路由配置 -->
         <el-menu :router='true' default-active="/home/user" class="el-menu-vertical-demo" @open="handleOpen" @close="handleClose" background-color="#545c64" text-color="#fff" active-text-color="#ffd04b">
           <el-submenu index="1">
@@ -33,12 +35,14 @@
             </template>
             <!-- 启用路由模式后，index就相当于 原来 router-link 中的to属性，用来指定导航的路径（哈希值） -->
             <!-- 可以使用 /home/users 或者 home/users -->
-            <el-menu-item index="/home/user">
+
+            <el-menu-item index="/home/user" class='menuitem'>
               <template slot="title">
                 <i class="el-icon-menu"></i>
                 <span>用户列表</span>
               </template>
             </el-menu-item>
+
           </el-submenu>
           <!-- 第二个菜单，index唯一 -->
           <el-submenu index="2">
@@ -46,13 +50,15 @@
               <i class="el-icon-location"></i>
               <span>用户管理</span>
             </template>
-            <el-menu-item index="2-1">用户列表</el-menu-item>
+            <el-menu-item index="2-1">角色列表</el-menu-item>
+            <el-menu-item index="2-2">权限列表</el-menu-item>
           </el-submenu>
         </el-menu>
       </el-aside>
       <el-main>
         <router-view></router-view>
       </el-main>
+
     </el-container>
   </el-container>
 </template>
@@ -96,11 +102,11 @@ export default {
 <style scope lang="less">
 .home-wrapper {
   height: 100%;
+  width: 100%;
 
   .el-header {
     padding: 0;
     background-color: white;
-    border: 1px dotted rgb(113, 201, 13);
     text-align: center;
     .logo {
       text-align: left;
@@ -130,6 +136,9 @@ export default {
     }
   }
 
+  .el-container {
+    height: 100%;
+  }
   .el-aside {
     background-color: #d3dce6;
     color: #333;
@@ -137,6 +146,11 @@ export default {
 
     .el-menu-vertical-demo {
       height: 100%;
+    }
+
+    .el-menu-item {
+      min-width: 137px;
+      padding: 0;
     }
   }
 

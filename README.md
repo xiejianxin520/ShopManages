@@ -86,8 +86,12 @@ axios.defaults.baseURL = 'http://localhost:8888/api/private/v1'
         - 1.1 将控制对话框展示的数据设置为 true
         - 1.2 获取到当前用户数据，并展示在对话框中
           一丶scope.row 作为参数传进去（scope.row 展示的当前用户的数据 ）
-          二丶循环遍历编辑用户对话框的userEditForm ，把当前用户信息赋值进去后展示
+          二丶循环遍历编辑用户对话框的当前空的userEditForm ，把当前用户信息curUserdata赋值进去后展示
 
 ### 2.编辑用户对话框确定事件
+        - 1.2 验证成功才发送axios编辑请求
+         - 1.3 判断是否请求成功
+         -1.4 请求成功后，以传进来的参数id，用find方法找出当前页userlist的对象
+         -1.5，找出当前编辑对象后，把之前已经赋值有数据的userEditForm 分别赋值进去
 
 

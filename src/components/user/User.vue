@@ -294,8 +294,7 @@ export default {
       console.log(curUserdata)
       //当前用户参数传进来
       this.dialogEditUser = true
-      const { email, id, mobile } = curUserdata
-      //循环遍历编辑用户对话框的userEditForm ，把当前用户信息赋值进去后展示
+      //循环遍历编辑用户对话框的空的userEditForm ，把当前用户信息赋值进去后展示
       for (const key in this.userEditForm) {
         this.userEditForm[key] = curUserdata[key]
       }
@@ -311,13 +310,15 @@ export default {
               mobile
             })
             .then(res => {
-              console.log(res)
+              // console.log(res)
               const { data, meta } = res.data
               if (meta.status === 200) {
                 // 更新该用户的数据
-                const editUser = this.userlist.find(item => item.id === id)
-                editUser.email = data.email
-                editUser.mobile = data.mobile
+                //userlist当前页显示出来的三个对象的数组
+                const editObj = this.userlist.find(item => item.id === id)
+                // console.log(editObj)
+                editObj.email = email
+                editObj.mobile = mobile
 
                 // 关闭对话
                 this.dialogEditUser = false
@@ -330,6 +331,7 @@ export default {
             duration: 1000 //显示1秒
           })
         } else {
+          // 编辑用户失败
           this.$message({
             type: 'error',
             message: '编辑用户失败',

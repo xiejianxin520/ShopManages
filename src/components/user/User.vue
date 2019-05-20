@@ -192,25 +192,24 @@ export default {
       this.getUserList()
     },
     //开关禁用客户
-    switchChange(id, curState) {
+    async switchChange(id, curState) {
       // console.log(b)
-      this.$http.put(`/users/${id}/state/${curState}`).then(res => {
-        console.log('开关禁用客户', res)
-        const { data, meta } = res.data
-        if (meta.status === 200) {
-          this.$message({
-            message: data.mg_state === 0 ? '禁用成功' : '激活成功',
-            type: 'success',
-            duration: 1000
-          })
-        } else {
-          this.$message({
-            message: meta.msg,
-            type: 'error',
-            duration: 1000
-          })
-        }
-      })
+      const res = await this.$http.put(`/users/${id}/state/${curState}`)
+      console.log('开关禁用客户', res)
+      const { data, meta } = res.data
+      if (meta.status === 200) {
+        this.$message({
+          message: data.mg_state === 0 ? '禁用成功' : '激活成功',
+          type: 'success',
+          duration: 1000
+        })
+      } else {
+        this.$message({
+          message: meta.msg,
+          type: 'error',
+          duration: 1000
+        })
+      }
     },
     //添加用户确定按钮
     addUser() {

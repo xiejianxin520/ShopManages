@@ -56,26 +56,48 @@ export default {
   },
   methods: {
     // 登录功能的实现
-    login() {
-      axios.post('http://localhost:8888/api/private/v1/login', this.ruleForm).then(res => {
-        console.log(res.data)
-        const data = res.data.data
-        const meta = res.data.meta
-        if (meta.status === 200) {
-          // alert('登录成功')
-          // 将登录成功的标识（token）存储到localStorage中
-          localStorage.setItem('token', data.token)
-          this.$router.push('/home')
-        } else {
-          // alert(meta.msg)
-          this.$message({
-            type: 'error',
-            message: meta.msg,
-            duration: 1000 //显示1秒
-          })
-        }
-      })
+    // login() {
+    //   axios.post('http://localhost:8888/api/private/v1/login', this.ruleForm).then(res => {
+    //     console.log(res.data)
+    //     const data = res.data.data
+    //     const meta = res.data.meta
+    //     if (meta.status === 200) {
+    //       // alert('登录成功')
+    //       // 将登录成功的标识（token）存储到localStorage中
+    //       localStorage.setItem('token', data.token)
+    //       this.$router.push('/home')
+    //     } else {
+    //       // alert(meta.msg)
+    //       this.$message({
+    //         type: 'error',
+    //         message: meta.msg,
+    //         duration: 1000 //显示1秒
+    //       })
+    //     }
+    //   })
+    // },
+
+    //用async和await封装
+    async login() {
+      const res = await axios.post('http://localhost:8888/api/private/v1/login', this.ruleForm)
+      console.log(res.data)
+      const data = res.data.data
+      const meta = res.data.meta
+      if (meta.status === 200) {
+        // alert('登录成功')
+        // 将登录成功的标识（token）存储到localStorage中
+        localStorage.setItem('token', data.token)
+        this.$router.push('/home')
+      } else {
+        // alert(meta.msg)
+        this.$message({
+          type: 'error',
+          message: meta.msg,
+          duration: 1000 //显示1秒
+        })
+      }
     },
+
     //创建
     // ref 用在组件中，就表示当前组件
     // this.$refs.loginForm

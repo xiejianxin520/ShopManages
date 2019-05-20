@@ -2,10 +2,10 @@
   <el-container class="home-wrapper">
     <el-header>
       <el-row>
-        <el-col :span="8" class='logo'>
+        <el-col :span="5" class='logo'>
           <img src="@/assets/hanxin.jpg" alt="">
         </el-col>
-        <el-col :span="8">
+        <el-col :span="11">
           <h1 class="title">电商后台管理系统</h1>
         </el-col>
         <el-col :span="8">
@@ -28,6 +28,8 @@
       <el-aside style="width:150px;height:100%">
         <!-- 开启路由配置 -->
         <el-menu :router='true' default-active="/home/user" class="el-menu-vertical-demo" @open="handleOpen" @close="handleClose" background-color="#545c64" text-color="#fff" active-text-color="#ffd04b">
+          <!-- 第一个菜单，index唯一 -->
+          <!-- 里面的子index可以绑定路由路径跳转 -->
           <el-submenu index="1">
             <template slot="title">
               <i class="el-icon-location"></i>
@@ -35,7 +37,6 @@
             </template>
             <!-- 启用路由模式后，index就相当于 原来 router-link 中的to属性，用来指定导航的路径（哈希值） -->
             <!-- 可以使用 /home/users 或者 home/users -->
-
             <el-menu-item index="/home/user" class='menuitem'>
               <template slot="title">
                 <i class="el-icon-menu"></i>
@@ -45,13 +46,19 @@
 
           </el-submenu>
           <!-- 第二个菜单，index唯一 -->
+          <!-- 里面的子index可以绑定路由路径跳转 -->
           <el-submenu index="2">
             <template slot="title">
               <i class="el-icon-location"></i>
               <span>用户管理</span>
             </template>
             <el-menu-item index="2-1">角色列表</el-menu-item>
-            <el-menu-item index="2-2">权限列表</el-menu-item>
+            <el-menu-item index="/home/rights" class='menuitem'>
+              <template slot="title">
+                <i class="el-icon-menu"></i>
+                <span>权限管理</span>
+              </template>
+            </el-menu-item>
           </el-submenu>
         </el-menu>
       </el-aside>
@@ -117,6 +124,7 @@ export default {
       line-height: 60px;
       color: black;
       font-size: 36px;
+      text-align: center;
     }
 
     img {

@@ -50,13 +50,18 @@
           <el-submenu index="2">
             <template slot="title">
               <i class="el-icon-location"></i>
-              <span>用户管理</span>
+              <span>权限管理</span>
             </template>
-            <el-menu-item index="2-1">角色列表</el-menu-item>
+            <el-menu-item index="/home/roles" class='menuitem'>
+              <template slot="title">
+                <i class="el-icon-menu"></i>
+                <span>角色列表</span>
+              </template>
+            </el-menu-item>
             <el-menu-item index="/home/rights" class='menuitem'>
               <template slot="title">
                 <i class="el-icon-menu"></i>
-                <span>权限管理</span>
+                <span>权限列表</span>
               </template>
             </el-menu-item>
           </el-submenu>
@@ -123,7 +128,7 @@ export default {
       margin: 0;
       line-height: 60px;
       color: black;
-      font-size: 36px;
+      font-size: 28px;
       text-align: center;
     }
 

@@ -44,7 +44,7 @@
       <template slot-scope="scope">
         <el-button type="primary" plain size="mini" icon="el-icon-edit" @click="showEditRoles(scope.row)"></el-button>
         <el-button type="danger" plain size="mini" icon="el-icon-delete" @click="delRoles(scope.row.id)"></el-button>
-        <el-button type="success" plain size="mini" icon="el-icon-check">分配权限</el-button>
+        <el-button type="success" plain size="mini" icon="el-icon-check" @click="showRights">分配权限</el-button>
       </template>
     </el-table-column>
   </el-table>
@@ -57,11 +57,28 @@
       <el-form-item label="角色描述" label-width="120px">
         <el-input v-model="curRolesform.roleDesc" autocomplete="off"></el-input>
       </el-form-item>
-
     </el-form>
     <div slot="footer" class="dialog-footer">
       <el-button @click="dialogFormRoles = false">取 消</el-button>
       <el-button type="primary" @click="editRoles">确 定</el-button>
+    </div>
+  </el-dialog>
+  <!-- 编辑权限分配对话框 -->
+  <el-dialog title="权限分配" :visible.sync="dialogFormRights">
+    <!--
+      树形控件
+        data 用来指定数据
+        show-checkbox 表示显示checkbox
+        node-key 每个节点的唯一标识，使用 id 即可
+        default-expand-all 默认展开所有的节点
+        props 是一个对象，用来设置 子节点以及展示文字 的属性名称
+    -->
+    <el-tree :data="rightsTree" show-checkbox node-key="id" :default-expand-all="true" :props="defaultProps">
+    </el-tree>
+
+    <div slot="footer" class="dialog-footer">
+      <el-button @click="dialogFormRights = false">取 消</el-button>
+      <el-button type="primary" @click="dialogFormRights = false">确 定</el-button>
     </div>
   </el-dialog>
 </div>

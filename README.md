@@ -95,4 +95,23 @@ axios.defaults.baseURL = 'http://localhost:8888/api/private/v1'
          -1.5，找出当前编辑对象后，把之前已经赋值有数据的userEditForm 分别赋值进去
 
 
+<hr>
+
 ### 权限管理
+
+###  - 1.1 权限列表展示
+- 1.2 自定义按钮或者自定义内容要加 template slot-scope="scope" 可以判断等级
+
+###  - 2 权限列表展示 
+
+### 删除用户
+  - 1.1 删除角色信息(需要传值)，要用到template slot-scope="scope"
+        二 找到索引值后，this.rolesList.splice(curindex, 1)
+
+### 编辑用户
+  - 1.2 编辑用户数据，并展示在对话框中
+          一丶scope.row 作为参数传进去（scope.row 展示的当前用户的数据 ）
+          二丶循环遍历编辑用户对话框的当前curRolesform ，把当前用户信息scope.row的key赋值进去后展示
+
+- 1.3 点击确定编辑用户数据，从列表中渲染
+        一。根据传进来的ID找到当前项，并把请求到数据 赋值进去

@@ -18,7 +18,9 @@ export default {
         children: 'children',
         // label 用来指定使用数据中的哪个属性展示树形控制中每个节点的名字
         label: 'authName'
-      }
+      },
+      //点击“分配权限”按钮时的用户id
+      curRoleId: -1
     }
   },
   created() {
@@ -190,8 +192,11 @@ export default {
     /**
      * 点击展示修改权限
      */
-    showRights(curRights) {
+    showRights(curRights, id) {
       this.dialogFormRights = true
+
+      // 当前用户id
+      this.curRoleId = id
 
       //可以通过当前的被选中三级菜单的ID来选中来绑定显示当前所拥有勾选中的节点
       //传进来的curRights是当前第一级菜单的权限，循环遍历找出当前被选中三级菜单的所有权的ID
@@ -217,6 +222,42 @@ export default {
       // 因为上面通过设置 rightsDialog = true，将对话框展示出来，但是，Vue中的DOM更新
       // 是异步的，数据已经更新，但是dom还没更新，所以，必须等到DOM更新完成后，才能获取到的 tree
       // 当 nextTick 的回调函数执行的时候，DOM就已经完成更新了
+    },
+    /**
+     * 给角色分配权限后点击确定，渲染页面
+     */
+    async assignRights() {
+
+      //  当前用户this.curRoleId 可以通过上一个点击“分配权限按钮”获取到存在data中
+
+      //this.$refs.tree.getCheckedKeys() 若节点可被选择则返回目前被选中的节点的 key 所组成的数组
+      // 获取全选项
+      const checkedKeys = this.$refs.tree.getCheckedKeys()
+      // 获取半选项
+      const halfCheckedKeys = this.$refs.tree.getHalfCheckedKeys()
+      // 将全选的和半选的合并到一起
+      const allCheckedIds = [...checkedKeys, ...halfCheckedKeys]
+
+      const res = await this.$http.post(`/roles/${this.curRoleId}/rights`, {
+        rids: allCheckedIds.join(',')
+      })
+      // console.log(res.data);
+      const {
+        data,
+        meta
+      } = res.data
+
+      if (meta.status === 200) {
+        // 注意：需要重新获取角色列表
+        this.getRolesList()
+
+        this.$message({
+          type: 'success',
+          message: '分配权限成功!'
+        });
+
+        this.dialogFormRights = false
+      }
     }
   }
 }

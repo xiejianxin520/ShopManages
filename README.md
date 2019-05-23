@@ -130,16 +130,29 @@ axios.defaults.baseURL = 'http://localhost:8888/api/private/v1'
 - 2 对话框弹出来后，this.dialogFormRights = true就会直接所有树形数据
 
 ### 当前角色拥有的权限据渲染权限树形
-       ### 思路：-1. setCheckedKeys是通过 keys 设置目前勾选的节点,参数为数组（当前权限id）
-              -2.  用三级菜单权限就可以控制一二级选中状态，就可以直接操作三级菜单权限id
-              -3. 三级菜单权限id可以点击点击展开“分配权限”按钮时候传入来后，三层循环遍历得到
 
-                ### 步骤
+### 思路：
+ -1. setCheckedKeys是通过 keys 设置目前勾选的节点,参数为数组（当前权限id），而且模板要ref="tree" 
+        -2.  用三级菜单权限就可以控制一二级选中状态，就可以直接操作三级菜单权限id
+        -3. 三级菜单权限id可以点击点击展开“分配权限”按钮时候传入来后，三层循环遍历得到
+
+### 步骤
                 -1.在点击展开“分配权限”按钮时候，传入当前的当前第一级菜单的里权限数据 scope.row.childrens
                  -2.循环遍历传进来的第一级菜单数据，得到三级菜单的权限ID
                   -3. setCheckedKeys参数传入三级菜单的权限ID数组就可以
 
 
-        ### 注意：因为对话框之前 dialog 一开始是隐藏的。当对话话框展示出来，Vue中的DOM更新
-       是异步的，数据已经更新，但是dom还没更新，
+ ### 注意：
+                因为对话框之前 dialog 一开始是隐藏的。当对话话框展示出来，Vue中的DOM更新
+        是异步的，数据已经更新，但是dom还没更新，
       当 nextTick 的回调函数执行的时候，DOM就已经完成更新了，就可以获取到 this.$refs.tree
+
+
+### 给角色分配权限后点击确定，渲染页面
+
+### 思路：
+-1.后台接口需要两个参数当前用户ID :curRoleId ,当前被选中的权限的 rids
+-2.当前用户ID :curRoleId 可以通过上一次点击“分配权限按钮”传入参数获取到存在data中
+-3.当前被选中的权限的 rids 要用his.$refs.tree.getCheckedKeys()和this.$refs.tree.getHalfCheckedKeys()
+
+ ### 注意：rids   是要将全选的和半选的合并到一起

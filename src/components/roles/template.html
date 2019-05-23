@@ -10,7 +10,7 @@
         <!-- closable 带有关闭x号 type 表示颜色类型 -->
         <el-row class="level1-row" v-for="level1 in scope.row.childrens" :key="level1.id">
           <el-col :span="4">
-            <el-tag closable>
+            <el-tag closable @close="delRightsByID(scope.row.id,level1.id)">
               {{level1.authName}}
             </el-tag>
           </el-col>
@@ -18,13 +18,14 @@
             <!-- 遍历二级菜单 -->
             <el-row class="level2-row" v-for="level2 in level1.children" :key="level2.id">
               <el-col :span="4">
-                <el-tag closable type="success">
+                <el-tag closable type="success" @close="delRightsByID(scope.row.id,level2.id)">
                   {{level2.authName}}
                 </el-tag>
               </el-col>
               <el-col :span="20" class="level3-col">
                 <!-- 遍历三级菜单 -->
-                <el-tag class="level3-tag" v-for="level3 in level2.children" :key="level3.id" closable type='warning'>
+                <el-tag class="level3-tag" v-for="level3 in level2.children" :key="level3.id" closable type='warning'
+                  :disable-transitions="true" @close="delRightsByID(scope.row.id,level3.id)">
                   {{level3.authName}}
                 </el-tag>
               </el-col>
@@ -44,7 +45,8 @@
       <template slot-scope="scope">
         <el-button type="primary" plain size="mini" icon="el-icon-edit" @click="showEditRoles(scope.row)"></el-button>
         <el-button type="danger" plain size="mini" icon="el-icon-delete" @click="delRoles(scope.row.id)"></el-button>
-        <el-button type="success" plain size="mini" icon="el-icon-check" @click="showRights">分配权限</el-button>
+        <el-button type="success" plain size="mini" icon="el-icon-check" @click="showRights(scope.row.childrens)">分配权限
+        </el-button>
       </template>
     </el-table-column>
   </el-table>
@@ -72,13 +74,15 @@
         node-key 每个节点的唯一标识，使用 id 即可
         default-expand-all 默认展开所有的节点
         props 是一个对象，用来设置 子节点以及展示文字 的属性名称
+
+        ref="tree"是可以通过key获取或者设置被选中的项
     -->
-    <el-tree :data="rightsTree" show-checkbox node-key="id" :default-expand-all="true" :props="defaultProps">
+    <el-tree ref="tree" :data="rightsTree" show-checkbox node-key="id" :default-expand-all="true" :props="defaultProps">
     </el-tree>
 
     <div slot="footer" class="dialog-footer">
       <el-button @click="dialogFormRights = false">取 消</el-button>
-      <el-button type="primary" @click="dialogFormRights = false">确 定</el-button>
+      <el-button type="primary" @click="assignRights">确 定</el-button>
     </div>
   </el-dialog>
 </div>

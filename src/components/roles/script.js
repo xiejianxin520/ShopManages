@@ -148,14 +148,41 @@ export default {
       this.dialogFormRoles = false
     },
     /**
+     * 删除指定角色的权限
+     * @param {number} roleId 角色id
+     * @param {number} rightId 权限id
+     */
+    async delRightsByID(roleId, rightId) {
+      console.log('删除', roleId, rightId)
+      const res = await this.$http.delete(`roles/${roleId}/rights/${rightId}`)
+      // console.log(res.data);
+      const {
+        data,
+        meta
+      } = res.data
+      if (meta.status === 200) {
+        //要找到被删的所在的对象，通过用户独有的id
+        const curdelroles = this.rolesList.find(item => item.id === roleId)
+        // console.log(curdelroles);
+        curdelroles.childrens = data
+        this.$message({
+          type: 'success',
+          message: '删除成功!'
+        });
+      }
+    },
+    /**
      * 首先页面加载先获取所有树形数据
      */
     async getRightsTree() {
       const res = await this.$http.get('/rights/tree')
       console.log('权限列表', res.data);
 
-      const {data,meta} = res.data
-      if(meta.status === 200){
+      const {
+        data,
+        meta
+      } = res.data
+      if (meta.status === 200) {
         this.rightsTree = data
         // console.log(this.rightsTree);
       }
@@ -163,9 +190,33 @@ export default {
     /**
      * 点击展示修改权限
      */
-    showRights() {
+    showRights(curRights) {
       this.dialogFormRights = true
 
+      //可以通过当前的被选中三级菜单的ID来选中来绑定显示当前所拥有勾选中的节点
+      //传进来的curRights是当前第一级菜单的权限，循环遍历找出当前被选中三级菜单的所有权的ID
+      this.$nextTick(() => {
+        const level3Ids = [];
+        curRights.forEach(leavel1 => {
+          leavel1.children.forEach(leavel2 => {
+            leavel2.children.forEach(leavel3 => {
+              level3Ids.push(leavel3.id)
+            })
+          })
+        })
+        // console.log('ss', level3Ids);
+        // setCheckedKeys是通过 keys 设置目前勾选的节点,参数为数组
+        this.$refs.tree.setCheckedKeys(level3Ids);
+      })
+      //因为tree是包裹在 dialog 中的，而 dialog 一开始是隐藏的
+      // 并且，dialog 隐藏的时候， Vue 是不会渲染这个 dialog 组件
+      // 因此，无法直接通过 $refs 来获取到tree
+
+      // 如何获取到？？？
+      // 在 $nextTick 回调函数中，就可以获取到的tree。
+      // 因为上面通过设置 rightsDialog = true，将对话框展示出来，但是，Vue中的DOM更新
+      // 是异步的，数据已经更新，但是dom还没更新，所以，必须等到DOM更新完成后，才能获取到的 tree
+      // 当 nextTick 的回调函数执行的时候，DOM就已经完成更新了
     }
   }
 }

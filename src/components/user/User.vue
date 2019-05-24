@@ -47,14 +47,17 @@
         <template slot-scope="scope">
           <el-button type="primary" plain size="mini" icon="el-icon-edit" @click="showEditUser(scope.row)"></el-button>
           <el-button type="danger" plain size="mini" icon="el-icon-delete" @click="delUser(scope.row.id)"></el-button>
-          <el-button type="success" icon="el-icon-check" plain size="mini">分配角色</el-button>
+          <el-button type="success" icon="el-icon-check" plain size="mini" @click="showAssign(scope.row)">分配角色</el-button>
         </template>
       </el-table-column>
     </el-table>
-
     <!-- //分页    layout 分页显示的内容 给 current-page 属性添加 .sync 修饰符后, 就可以设置当前页-->
-    <el-pagination background layout="prev, pager, next" :total="total" :pageSize='pageSize' :current-page.sync="curPage" @current-change='currentChange'>
+    <!-- size-change和current-change事件来处理页码大小和当前页变动时候触发的事件 -->
+    <el-pagination background @size-change="handleSizeChange" @current-change="handleCurrentChange" :current-page="current" :page-sizes="[2,4,6,8]" :page-size="pageSize" layout="total, sizes, prev, pager, next, jumper" :total="total">
     </el-pagination>
+
+    <!-- <el-pagination background layout="prev, pager, next" :total="total" :pageSize='pageSize' :current-page.sync="curPage" @current-change='currentChange'>
+    </el-pagination> -->
 
     <!-- 添加用户对话框 :visible.sync="dialogFormVisible" 绑定是否打开对话框-->
     <el-dialog title="添加用户" :visible.sync="dialogFormVisible" @close="closeUserAdd">
@@ -96,6 +99,26 @@
         <el-button type="primary" @click="editUser">确 定</el-button>
       </div>
     </el-dialog>
+    <!-- 用户分配权限对话框 -->
+    <el-dialog title="分配权限" :visible.sync="dialogFromRights" width="40%">
+      <el-form :model="Rightsform">
+        <el-form-item label="用户名" label-width="80px">
+          <el-input v-model="Rightsform.username" autocomplete="off" disabled></el-input>
+        </el-form-item>
+        <el-form-item label="角色列表" label-width="80px">
+          <!-- 多选框 v-model双向绑定的值来控制多选框的选中值-->
+          <el-select v-model="Rightsform.rid" clearable placeholder="请选择">
+            <el-option v-for="item in options" :key="item.id" :label="item.roleName" :value="item.id">
+            </el-option>
+          </el-select>
+        </el-form-item>
+      </el-form>
+      <div slot="footer" class="dialog-footer">
+        <el-button @click="dialogFromRights = false">取 消</el-button>
+        <el-button type="primary" @click="assignRole">确 定</el-button>
+      </div>
+    </el-dialog>
+
   </div>
 </template>
 
@@ -106,10 +129,10 @@ export default {
     return {
       userlist: [],
       //绑定属性默认都要写的
-      pageSize: 3, // 每页条数
-      total: 10, // 总条数
-      curPage: 1, // 当前页
-      queryStr: '',
+      pageSize: 2, // 每页条数
+      total: 0, // 总条数
+      current: 1, // 当前页
+      queryStr: '', //关键字
       //增加用户对话框
       dialogFormVisible: false, //默认增加用户弹框关闭
       userAddForm: {
@@ -117,28 +140,17 @@ export default {
         password: '',
         email: '',
         mobile: ''
-      },
+      }, //添加用户规则
       userAddRules: {
-        //添加用户规则
         username: [
           { required: true, message: '用户名为必填项', trigger: 'blur' },
-          { min: 3, max: 5, message: '长度在 3 到 6 个字符', trigger: 'blur' }
+          { min: 2, max: 5, message: '长度在 2 到 6 个字符', trigger: 'blur' }
         ],
         password: [
           { required: true, message: '密码为必填项', trigger: 'blur' },
           { min: 3, max: 6, message: '长度在 3 到 6 个字符', trigger: 'blur' }
-        ]
-      },
-      //编辑用户对话框
-      dialogEditUser: false, //默认用户弹框关闭
-      userEditForm: {
-        username: '',
-        email: '',
-        mobile: '',
-        id: ''
-      },
-      userEditRules: {
-        //编辑用户规则
+        ],
+        email: [{ type: 'email', message: '请输入正确的邮箱格式', trigger: 'change' }],
         mobile: [
           {
             pattern: /^(0|86|17951)?(13[0-9]|15[012356789]|166|17[3678]|18[0-9]|14[57])[0-9]{8}$/,
@@ -149,7 +161,38 @@ export default {
             trigger: 'change'
           }
         ]
-      }
+      },
+      //编辑用户对话框
+      dialogEditUser: false, //默认用户弹框关闭
+      userEditForm: {
+        username: '',
+        email: '',
+        mobile: '',
+        id: ''
+      },
+      //编辑用户规则
+      userEditRules: {
+        email: [{ type: 'email', message: '请输入正确的邮箱格式', trigger: 'change' }],
+        mobile: [
+          {
+            pattern: /^(0|86|17951)?(13[0-9]|15[012356789]|166|17[3678]|18[0-9]|14[57])[0-9]{8}$/,
+            message: '手机号码格式不正确',
+            // 如果需要在值改变或者失去焦点的时候，都触发验证，可以传递两个
+            // trigger: 'change, blur'
+            // 当前值改变，就会触发
+            trigger: 'change'
+          }
+        ]
+      },
+      //打开分配用户对话框
+      dialogFromRights: false,
+      Rightsform: {
+        id: -1,
+        username: '',
+        rid: ''
+      },
+      //多选框的选择
+      options: []
     }
   },
   created() {
@@ -157,12 +200,12 @@ export default {
   },
   methods: {
     //获取用户列表渲染页面
-    getUserList(curPage = 1) {
+    getUserList() {
       this.$http
         .get('/users', {
           params: {
-            pagenum: curPage, // 当前页
-            pagesize: 3, // 每页展示多少条数据
+            pagenum: this.current, // 当前页
+            pagesize: this.pageSize, // 每页展示多少条数据
             query: this.queryStr || ''
           }
           // headers: { Authorization: localStorage.getItem('token') } // 将 token 作为请求头，传递给服务器接口这样，才能正确的调用这个接口
@@ -175,9 +218,22 @@ export default {
           if (meta.status === 200) {
             this.userlist = data.users
             this.total = data.total
-            this.curPage = data.pagenum
+            // this.curPage = data.pagenum
           }
         })
+    },
+    // 每页条数改变触发 val为页面你点击的[2,4,6,8]中一个，这里val为每页的条数
+    handleSizeChange(val) {
+      // console.log(`每页 ${val} 条`)
+      this.pageSize = val
+      this.current = 1
+      this.getUserList()
+    },
+    //当前页改变触发 这里的val为你点击当前页码
+    handleCurrentChange(val) {
+      // console.log(`当前页: ${val}`)
+      this.current = val
+      this.getUserList()
     },
     //------跳转到想要分页数据.*********
     currentChange(a) {
@@ -189,6 +245,9 @@ export default {
     //搜索框功能
     queryData() {
       // console.log(this.queryStr)
+
+      // 搜索的时候，让当前页变成1
+      this.current = 1
       this.getUserList()
     },
     //开关禁用客户
@@ -224,6 +283,11 @@ export default {
               this.dialogFormVisible = false
               // this.closeUserAdd()//跳出对话框会自动执行清空命令
               // 2. 重新获取列表数据渲染页面
+              // 求当前最大的页码,并跳转
+              this.total++
+              // console.log('ss', this.total, this.pageSize)
+              this.current = Math.ceil(this.total / this.pageSize)
+            
               this.getUserList()
               //成功信息
               this.$message({
@@ -277,6 +341,8 @@ export default {
               //   this.getUserList(--this.curPage)
               // }
 
+              // 重新渲染
+              if (this.userlist.length === 1 && this.current > 1) this.current--
               this.getUserList()
             }
           })
@@ -341,6 +407,69 @@ export default {
     },
     closeUserEdit() {
       this.$refs.userEditForm.resetFields()
+    },
+    //打开分配权限对话框
+    async showAssign(row) {
+      this.dialogFromRights = true
+      //获取打开分配权限当前用户信息
+      console.log('当前被打开用户信息', row)
+      //赋值给多选框需要渲染的数据
+      this.Rightsform.id = row.id
+      this.Rightsform.username = row.username
+
+      //获取多选框的角色数据
+      this.getSelRoleData()
+
+      //根据id获取到角色rid,从而才能操作多选框的内容双向绑定
+      const res = await this.$http.get(`users/${row.id}`)
+      console.log(res.data)
+      const {
+        meta: { status },
+        data
+      } = res.data
+
+      if (status === 200) {
+        if (data.rid === -1 || data.rid === 0) {
+          this.Rightsform.rid = ''
+        } else {
+          this.Rightsform.rid = data.rid
+        }
+      }
+    },
+    //获取多选框的角色数据
+    async getSelRoleData() {
+      const res = await this.$http.get('/roles')
+      const {
+        meta: { status },
+        data
+      } = res.data
+      if (status === 200) {
+        this.options = data
+      }
+    },
+    //对话框后点击确定，s分配权限
+    async assignRole() {
+      //如果没有给分配权限点确定话提醒
+      if (!this.Rightsform.rid) {
+        this.$message.error('请选择一个角色')
+        return
+      }
+
+      // 分配用户的角色
+      const res = await this.$http.put(`users/${this.Rightsform.id}/role`, {
+        rid: this.Rightsform.rid
+      })
+      console.log(res.data)
+      const {
+        meta: { status },
+        data
+      } = res.data
+      if (status === 200) {
+        this.$message.success('分配角色成功了')
+
+        this.dialogFromRights = false
+        this.getUserList()
+      }
     }
   },
   components: {}

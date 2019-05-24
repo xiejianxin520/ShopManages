@@ -44,12 +44,12 @@ export default {
       // trigger 表单验证的触发实际，blur表示失去焦点时触发
       rules: {
         username: [
-          { required: true, message: '用户名为必填项', trigger: 'blur' },
-          { min: 3, max: 5, message: '长度在 3 到 5 个字符', trigger: 'blur' }
+          { required: true, message: '用户名为必填项', trigger: 'change' },
+          { min: 3, max: 5, message: '长度在 3 到 5 个字符', trigger: 'change' }
         ],
         password: [
-          { required: true, message: '密码为必填项', trigger: 'blur' },
-          { min: 3, max: 6, message: '长度在 3 到 6 个字符', trigger: 'blur' }
+          { required: true, message: '密码为必填项', trigger: 'change' },
+          { min: 3, max: 6, message: '长度在 3 到 6 个字符', trigger: 'change' }
         ]
       }
     }

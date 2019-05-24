@@ -24,10 +24,11 @@
         index 是唯一的，不能重复！！!!!!!!
         template: 用来包裹一级菜单，内部指定菜单的图标和菜单名
         如果要给菜单添加 小图标，应该使用 template 来包裹整个内容
+         unique-opened 是否打开一个子菜单
               -->
       <el-aside style="width:150px;height:100%">
         <!-- 开启路由配置 -->
-        <el-menu :router='true' default-active="/home/user" class="el-menu-vertical-demo" @open="handleOpen" @close="handleClose" background-color="#545c64" text-color="#fff" active-text-color="#ffd04b">
+        <el-menu :router='true' default-active="$route.path.slice(1)" unique-opened class="el-menu-vertical-demo" @open="handleOpen" @close="handleClose" background-color="#545c64" text-color="#fff" active-text-color="#ffd04b">
           <!-- 第一个菜单，index唯一 -->
           <!-- 里面的子index可以绑定路由路径跳转 -->
           <el-submenu index="1">

@@ -75,12 +75,14 @@ axios.defaults.baseURL = 'http://localhost:8888/api/private/v1'
 - 1 添加用户失败
         1.1 //添加用户成功后应该跳出对话框
          1.2 重新获取列表数据渲染页面
+         （ 求当前最大的页码,并跳转，  this.total++， this.current = Math.ceil(this.total / this.pageSize)）
 - 2 添加用户失败（用户名已被占用）弹框显示处理
 
 ### 删除用户
+-1.把当前用户的id为scope.row.id参数传进入，调接口
+-2.后台删除成功后，重新渲染页面（并判断当前是不是最后一页(this.userlist.length === 1)，如果是那就要this.current--）
 
 ### 编辑用户
-
 ### 打开编辑用户对话框的步骤
 ### 1.展示编辑用户对话框事件
         - 1.1 将控制对话框展示的数据设置为 true
@@ -156,3 +158,15 @@ axios.defaults.baseURL = 'http://localhost:8888/api/private/v1'
 -3.当前被选中的权限的 rids 要用his.$refs.tree.getCheckedKeys()和this.$refs.tree.getHalfCheckedKeys()
 
  ### 注意：rids   是要将全选的和半选的合并到一起
+
+
+ ### 回到用户界面，给当前用户分配权限
+
+ ### 一.打开分配权限对话框时候
+-1.定义多选框绑定的对象Rightsform ，然后传入row的当前的id，username传进去渲染
+-2.根据id获取到角色rid,从而才能操作多选框的内容双向绑定（ <el-select v-model="Rightsform.rid">）
+-3.后台根据id请求到获取到角色rid，把rid赋值给多选框绑定的对象Rightsform.rid
+
+### 一.点击确定分配权限
+-1. 通过Rightsform.rid有没有值，如果没有给分配权限点确定话提醒
+-2.给当前用户分配好权限返回给后台数据并刷新页面

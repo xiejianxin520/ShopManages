@@ -33,7 +33,7 @@ export default {
      */
     async getRolesList() {
       const res = await this.$http.get('/roles')
-      console.log('角色列表', res.data)
+      // console.log('角色列表', res.data)
       const {
         data,
         meta
@@ -62,7 +62,8 @@ export default {
           cancelButtonText: '取消',
           type: 'warning'
         })
-        console.log('点击确定删除')
+
+        // console.log('点击确定删除')
 
         // 如果点击是确定按钮，就会执行以下代码：
         // 发送请求，删除当前角色
@@ -79,7 +80,7 @@ export default {
       } catch (err) {
         // 如果点击的取消按钮，就会执行以下代码：
         // 相当于处理 Promise 的catch()
-        console.log('点击取消')
+        // console.log('点击取消')
 
         this.$message({
           type: 'info',
@@ -155,7 +156,7 @@ export default {
      * @param {number} rightId 权限id
      */
     async delRightsByID(roleId, rightId) {
-      console.log('删除', roleId, rightId)
+      // console.log('删除', roleId, rightId)
       const res = await this.$http.delete(`roles/${roleId}/rights/${rightId}`)
       // console.log(res.data);
       const {
@@ -178,7 +179,7 @@ export default {
      */
     async getRightsTree() {
       const res = await this.$http.get('/rights/tree')
-      console.log('权限列表', res.data);
+      // console.log('权限列表', res.data);
 
       const {
         data,

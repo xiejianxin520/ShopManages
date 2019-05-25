@@ -80,7 +80,7 @@ export default {
     //用async和await封装
     async login() {
       const res = await axios.post('http://localhost:8888/api/private/v1/login', this.ruleForm)
-      console.log(res.data)
+      // console.log(res.data)
       const data = res.data.data
       const meta = res.data.meta
       if (meta.status === 200) {

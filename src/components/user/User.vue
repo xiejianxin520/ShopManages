@@ -211,7 +211,7 @@ export default {
           // headers: { Authorization: localStorage.getItem('token') } // 将 token 作为请求头，传递给服务器接口这样，才能正确的调用这个接口
         })
         .then(res => {
-          console.log('USER返回数据', res) //里面有包含总页数
+          // console.log('USER返回数据', res) //里面有包含总页数
           // const { data, meta } = res.data
           const data = res.data.data
           const meta = res.data.meta
@@ -254,7 +254,7 @@ export default {
     async switchChange(id, curState) {
       // console.log(b)
       const res = await this.$http.put(`/users/${id}/state/${curState}`)
-      console.log('开关禁用客户', res)
+      // console.log('开关禁用客户', res)
       const { data, meta } = res.data
       if (meta.status === 200) {
         this.$message({
@@ -276,7 +276,7 @@ export default {
         if (valid) {
           // console.log('验证成功', this.userAddForm)
           this.$http.post('/users', this.userAddForm).then(res => {
-            console.log(res)
+            // console.log(res)
             const meta = res.data.meta
             if (meta.status === 201) {
               //添加用户成功后应该跳出对话框
@@ -287,7 +287,7 @@ export default {
               this.total++
               // console.log('ss', this.total, this.pageSize)
               this.current = Math.ceil(this.total / this.pageSize)
-            
+
               this.getUserList()
               //成功信息
               this.$message({
@@ -304,7 +304,7 @@ export default {
             }
           })
         } else {
-          console.log('验证失败')
+          // console.log('验证失败')
           this.$message({
             type: 'error',
             message: '验证失败',
@@ -326,7 +326,7 @@ export default {
       })
         .then(() => {
           this.$http.delete(`users/${id}`).then(res => {
-            console.log(res)
+            // console.log(res)
             const meta = res.data.meta
             if (meta.status === 200) {
               this.$message({
@@ -356,7 +356,7 @@ export default {
     },
     //展示编辑用户对话框
     showEditUser(curUserdata) {
-      console.log(curUserdata)
+      // console.log(curUserdata)
       //当前用户参数传进来
       this.dialogEditUser = true
       //循环遍历编辑用户对话框的空的userEditForm ，把当前用户信息赋值进去后展示
@@ -412,7 +412,7 @@ export default {
     async showAssign(row) {
       this.dialogFromRights = true
       //获取打开分配权限当前用户信息
-      console.log('当前被打开用户信息', row)
+      // console.log('当前被打开用户信息', row)
       //赋值给多选框需要渲染的数据
       this.Rightsform.id = row.id
       this.Rightsform.username = row.username
@@ -422,7 +422,7 @@ export default {
 
       //根据id获取到角色rid,从而才能操作多选框的内容双向绑定
       const res = await this.$http.get(`users/${row.id}`)
-      console.log(res.data)
+      // console.log(res.data)
       const {
         meta: { status },
         data
@@ -459,7 +459,7 @@ export default {
       const res = await this.$http.put(`users/${this.Rightsform.id}/role`, {
         rid: this.Rightsform.rid
       })
-      console.log(res.data)
+      // console.log(res.data)
       const {
         meta: { status },
         data

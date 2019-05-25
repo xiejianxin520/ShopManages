@@ -170,3 +170,8 @@ axios.defaults.baseURL = 'http://localhost:8888/api/private/v1'
 ### 一.点击确定分配权限
 -1. 通过Rightsform.rid有没有值，如果没有给分配权限点确定话提醒
 -2.给当前用户分配好权限返回给后台数据并刷新页面
+
+#### 左侧菜单动态显示
+-1.请求后台获取到左侧的菜单数据，在data中提供menuList数据存储
+-2.利用v-for把菜单数据显示到页面中
+-3.处理子菜单的index跳转路径:index="'/home/'+item.path"  和 :default-active="$route.path"（都需要绑定数据）

@@ -18,33 +18,31 @@
     </el-header>
     <el-container>
       <!-- 侧边栏 -->
-      <!-- 
+      <el-aside style="width:150px;height:100%">
+        <!-- 
         default-active 当前激活菜单的 index 值
-        el-sub-menu 表示一组菜单
-        index 是唯一的，不能重复！！!!!!!!
+        el-submenu 表示一组菜单 el-menu-item表示子菜单  
         template: 用来包裹一级菜单，内部指定菜单的图标和菜单名
         如果要给菜单添加 小图标，应该使用 template 来包裹整个内容
          unique-opened 是否打开一个子菜单
               -->
-      <el-aside style="width:150px;height:100%">
-        <!-- 开启路由配置 -->
-        <el-menu :router='true' default-active="$route.path.slice(1)" unique-opened class="el-menu-vertical-demo" @open="handleOpen" @close="handleClose" background-color="#545c64" text-color="#fff" active-text-color="#ffd04b">
-          <!-- 第一个菜单，index唯一 -->
-          <!-- 里面的子index可以绑定路由路径跳转 -->
-          <el-submenu index="1">
+        <!-- 开启路由配置 :router='true'-->
+        <!-- 第一个菜单，index是标识符而已，不能重复 -->
+        <!-- 里面的子菜单index可以绑定路由路径跳转 -->
+        <!-- 启用路由模式后，index就相当于 原来 router-link 中的to属性，用来指定导航的路径（哈希值） -->
+        <!-- 可以使用 /home/users 或者 home/users -->
+        <el-menu :router='true' :default-active="$route.path" unique-opened class="el-menu-vertical-demo" background-color="#545c64" text-color="#fff" active-text-color="#ffd04b">
+          <el-submenu v-for="menu in menuList" :key="menu.id" :index="menu.path">
             <template slot="title">
               <i class="el-icon-location"></i>
-              <span>用户管理</span>
+              <span>{{menu.authName}}</span>
             </template>
-            <!-- 启用路由模式后，index就相当于 原来 router-link 中的to属性，用来指定导航的路径（哈希值） -->
-            <!-- 可以使用 /home/users 或者 home/users -->
-            <el-menu-item index="/home/user" class='menuitem'>
+            <el-menu-item v-for="item in menu.children" :key="item.id" :index="'/home/'+item.path" class='menuitem'>
               <template slot="title">
                 <i class="el-icon-menu"></i>
-                <span>用户列表</span>
+                <span>{{item.authName}}</span>
               </template>
             </el-menu-item>
-
           </el-submenu>
           <!-- 第二个菜单，index唯一 -->
           <!-- 里面的子index可以绑定路由路径跳转 -->
@@ -80,7 +78,9 @@
 export default {
   name: 'Home',
   data() {
-    return {}
+    return {
+      menuList: []
+    }
   },
   methods: {
     logout() {
@@ -101,12 +101,21 @@ export default {
           })
         })
     },
-    handleOpen(key, keyPath) {
-      console.log('open', key, keyPath)
-    },
-    handleClose(key, keyPath) {
-      console.log('close', key, keyPath)
+    //获取菜单列表
+    async getmenuList() {
+      const res = await this.$http.get('/menus')
+      let {
+        meta: { status },
+        data
+      } = res.data
+      if (status === 200) {
+        // console.log('获取菜单列表', data)
+        this.menuList = data
+      }
     }
+  },
+  created() {
+    this.getmenuList()
   },
   components: {}
 }

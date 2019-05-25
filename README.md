@@ -175,3 +175,8 @@ axios.defaults.baseURL = 'http://localhost:8888/api/private/v1'
 -1.请求后台获取到左侧的菜单数据，在data中提供menuList数据存储
 -2.利用v-for把菜单数据显示到页面中
 -3.处理子菜单的index跳转路径:index="'/home/'+item.path"  和 :default-active="$route.path"（都需要绑定数据）
+
+####  商品分类-列表渲染
+-1.Loading加载
+-2.引入插件el-table-tree-column,可以分类的展开功能 
+（安装：npm install element-tree-grid）(注册为局部组件)

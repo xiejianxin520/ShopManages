@@ -1,5 +1,6 @@
 <template>
   <el-container class="home-wrapper">
+    <!-- 头部 -->
     <el-header>
       <el-row>
         <el-col :span="5" class='logo'>

@@ -1,4 +1,4 @@
-## 项目功能
+项目功能
 
 - 1 登录(将登录成功的标识（token）存储到localStorage中)
 - 2 首页
@@ -53,7 +53,7 @@ axios.defaults.baseURL = 'http://localhost:8888/api/private/v1'
  - 响应拦截器有返回的数据，这时候我们可以判断token 是否正确，如果不正确返回登陆界面
 
 
- 
+
 
 
 ## 用户管理
@@ -134,28 +134,28 @@ axios.defaults.baseURL = 'http://localhost:8888/api/private/v1'
 ### 当前角色拥有的权限据渲染权限树形
 
 ### 思路：
- -1. setCheckedKeys是通过 keys 设置目前勾选的节点,参数为数组（当前权限id），而且模板要ref="tree" 
-        -2.  用三级菜单权限就可以控制一二级选中状态，就可以直接操作三级菜单权限id
-        -3. 三级菜单权限id可以点击点击展开“分配权限”按钮时候传入来后，三层循环遍历得到
+ - 1. setCheckedKeys是通过 keys 设置目前勾选的节点,参数为数组（当前权限id），而且模板要ref="tree" 
+        - 2.  用三级菜单权限就可以控制一二级选中状态，就可以直接操作三级菜单权限id
+        - 3. 三级菜单权限id可以点击点击展开“分配权限”按钮时候传入来后，三层循环遍历得到
 
 ### 步骤
-                -1.在点击展开“分配权限”按钮时候，传入当前的当前第一级菜单的里权限数据 scope.row.childrens
-                 -2.循环遍历传进来的第一级菜单数据，得到三级菜单的权限ID
-                  -3. setCheckedKeys参数传入三级菜单的权限ID数组就可以
+  -              - 1.在点击展开“分配权限”按钮时候，传入当前的当前第一级菜单的里权限数据 scope.row.childrens
+   -              - 2.循环遍历传进来的第一级菜单数据，得到三级菜单的权限ID
+  -                - 3. setCheckedKeys参数传入三级菜单的权限ID数组就可以
 
 
  ### 注意：
-                因为对话框之前 dialog 一开始是隐藏的。当对话话框展示出来，Vue中的DOM更新
-        是异步的，数据已经更新，但是dom还没更新，
-      当 nextTick 的回调函数执行的时候，DOM就已经完成更新了，就可以获取到 this.$refs.tree
+ -               因为对话框之前 dialog 一开始是隐藏的。当对话话框展示出来，Vue中的DOM更新
+ -       是异步的，数据已经更新，但是dom还没更新，
+  -    当 nextTick 的回调函数执行的时候，DOM就已经完成更新了，就可以获取到 this.$refs.tree
 
 
 ### 给角色分配权限后点击确定，渲染页面
 
 ### 思路：
--1.后台接口需要两个参数当前用户ID :curRoleId ,当前被选中的权限的 rids
--2.当前用户ID :curRoleId 可以通过上一次点击“分配权限按钮”传入参数获取到存在data中
--3.当前被选中的权限的 rids 要用his.$refs.tree.getCheckedKeys()和this.$refs.tree.getHalfCheckedKeys()
+- 1.后台接口需要两个参数当前用户ID :curRoleId ,当前被选中的权限的 rids
+- 2.当前用户ID :curRoleId 可以通过上一次点击“分配权限按钮”传入参数获取到存在data中
+- 3.当前被选中的权限的 rids 要用his.$refs.tree.getCheckedKeys()和this.$refs.tree.getHalfCheckedKeys()
 
  ### 注意：rids   是要将全选的和半选的合并到一起
 
@@ -163,20 +163,82 @@ axios.defaults.baseURL = 'http://localhost:8888/api/private/v1'
  ### 回到用户界面，给当前用户分配权限
 
  ### 一.打开分配权限对话框时候
--1.定义多选框绑定的对象Rightsform ，然后传入row的当前的id，username传进去渲染
--2.根据id获取到角色rid,从而才能操作多选框的内容双向绑定（ <el-select v-model="Rightsform.rid">）
--3.后台根据id请求到获取到角色rid，把rid赋值给多选框绑定的对象Rightsform.rid
+- 1.定义多选框绑定的对象Rightsform ，然后传入row的当前的id，username传进去渲染
+- 2.根据id获取到角色rid,从而才能操作多选框的内容双向绑定（ <el-select v-model="Rightsform.rid">）
+- 3.后台根据id请求到获取到角色rid，把rid赋值给多选框绑定的对象Rightsform.rid
 
 ### 一.点击确定分配权限
--1. 通过Rightsform.rid有没有值，如果没有给分配权限点确定话提醒
--2.给当前用户分配好权限返回给后台数据并刷新页面
+- 1. 通过Rightsform.rid有没有值，如果没有给分配权限点确定话提醒
+- 2.给当前用户分配好权限返回给后台数据并刷新页面
 
 #### 左侧菜单动态显示
--1.请求后台获取到左侧的菜单数据，在data中提供menuList数据存储
--2.利用v-for把菜单数据显示到页面中
--3.处理子菜单的index跳转路径:index="'/home/'+item.path"  和 :default-active="$route.path"（都需要绑定数据）
+- 1.请求后台获取到左侧的菜单数据，在data中提供menuList数据存储
+- 2.利用v-for把菜单数据显示到页面中
+- 3.处理子菜单的index跳转路径:index="'/home/'+item.path"  和 :default-active="$route.path"（都需要绑定数据）
 
 ####  商品分类-列表渲染
--1.Loading加载
--2.引入插件el-table-tree-column,可以分类的展开功能 
+- 1.Loading加载
+- 2.引入插件el-table-tree-column,可以分类的展开功能 
 （安装：npm install element-tree-grid）(注册为局部组件)
+
+# 商品分类-添加分类
+- 1.显示有验证规则rules的对话框
+
+- 2.对话框中加入[级联选择器]
+
+- 3.后台数据 赋值给[级联选择器] options数据 （注：返回的数据的格式与级联选择器需要的数据格式不一样， 需要配置 :prop = 'props'）
+
+  ```js
+  - props: {
+  - value: 'cat_id',
+  - label: 'cat_name',
+  - children: 'children'
+  - }
+  ```
+
+  ## 商品分类-添加的功能确定功能
+
+  - 1.给确定注册点击事件
+
+  - 2.给表单做校验
+
+  - 3.发送ajax请求，获取到ajax请求需要的参数
+
+  - 4.如果成功了
+    4.1 关闭对话框
+     4.2 清除提示信息
+     4.3 重新渲染列表
+     4.4 给一个提示信息
+
+  - 5.如果失败了，直接给一个提示信息
+
+    
+
+   - 注意：ajax请求需要参数`cat_pid ，cat_name ，cat_level
+
+   - 次级多选框可以参照多选框一样v-model绑定属性
+
+     ~~~js
+     ·<el-cascader
+                  v-model="addForm.cat_pid"
+     //
+     > </el-cascader>
+     //可以得到出三个参数的值
+      cat_pid: cat_pid[cat_pid.length - 1] || 0,
+         cat_name,
+         cat_level: cat_pid.length
+     ~~~
+
+     - 表单重置需要跟绑定prop,  this.$refs.goodsfrom.resetFields()
+
+     ~~~js
+     <el-form-item label="父级名称" label-width="120px" prop="cat_pid">
+     ~~~
+
+ ### 商品分类-删除功能
+ - 1. 给删除按钮注册点击事件（把id传过去）
+ - 2. 给一个确认框，是否要删除
+ - 3. 发送ajax请求，进行删除即可
+ - 4. 成功
+4.1 重新渲染
+4.2 提示内容

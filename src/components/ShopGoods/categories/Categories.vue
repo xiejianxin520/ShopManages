@@ -107,7 +107,7 @@ export default {
         //获取数据后，取消加载弹框
         setTimeout(() => {
           this.loading = false
-        }, 800)
+        }, 500)
       }
     },
     // 修改了每页的条数
@@ -159,10 +159,12 @@ export default {
           data
         } = res.data
         if (status === 201) {
-          this.getGoodsList()
           this.$message.success('添加商品分类成功')
           this.$refs.goodsfrom.resetFields() //重置
           this.dialogGoods = false
+          this.total++
+          this.current = Math.ceil(this.total / this.pageSize)
+          this.getGoodsList()
         } else {
           this.$messgae.error(msg)
         }
@@ -183,6 +185,9 @@ export default {
       } = res.data
       if (status === 200) {
         this.$message.success('删除分类成功了')
+        if (this.goodsList.length === 1 && this.current > 1) {
+          this.current--
+        }
         this.getGoodsList()
       } else {
         this.$message.error(msg)

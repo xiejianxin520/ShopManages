@@ -240,5 +240,15 @@ axios.defaults.baseURL = 'http://localhost:8888/api/private/v1'
  - 2. 给一个确认框，是否要删除
  - 3. 发送ajax请求，进行删除即可
  - 4. 成功
-4.1 重新渲染
+4.1 重新渲染（判断最后一页问题）
 4.2 提示内容
+
+### 商品管理-列表的展示功能
+- 商品信息的展示
+- 分页的功能（需要自定义从1到400索引，需要绑定:index）
+- 时间的过滤功能 （全局）要安装 cnpm i moment
+
+### 商品管理-准备添加商品的组件
+  ~~~js
+ :default-active="$route.path.slice(1).split('-')[0]"
+     ~~~

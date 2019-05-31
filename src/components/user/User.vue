@@ -63,16 +63,16 @@
     <el-dialog title="添加用户" :visible.sync="dialogFormVisible" @close="closeUserAdd">
       <el-form :model="userAddForm" :rules="userAddRules" ref="userAddForm">
         <el-form-item prop="username" label="用户名" label-width="120px">
-          <el-input v-model="userAddForm.username" autocomplete="off"></el-input>
+          <el-input v-model="userAddForm.username"></el-input>
         </el-form-item>
         <el-form-item prop="password" label="密码" label-width="120px">
-          <el-input v-model="userAddForm.password" autocomplete="off" show-password></el-input>
+          <el-input type="password" v-model="userAddForm.password" show-password></el-input>
         </el-form-item>
         <el-form-item prop="email" label="邮箱" label-width="120px">
-          <el-input v-model="userAddForm.email" autocomplete="off"></el-input>
+          <el-input v-model="userAddForm.email"></el-input>
         </el-form-item>
         <el-form-item prop="mobile" label="手机" label-width="120px">
-          <el-input v-model="userAddForm.mobile" autocomplete="off"></el-input>
+          <el-input v-model="userAddForm.mobile"></el-input>
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
@@ -85,13 +85,13 @@
     <el-dialog title="编辑用户" :visible.sync="dialogEditUser" @close="closeUserEdit">
       <el-form :model="userEditForm" :rules="userEditRules" ref="userEditForm">
         <el-form-item prop="username" label="用户名" label-width="120px">
-          <el-input disabled v-model="userEditForm.username" autocomplete="off"></el-input>
+          <el-input disabled v-model="userEditForm.username"></el-input>
         </el-form-item>
         <el-form-item prop="email" label="邮箱" label-width="120px">
-          <el-input v-model="userEditForm.email" autocomplete="off"></el-input>
+          <el-input v-model="userEditForm.email"></el-input>
         </el-form-item>
         <el-form-item prop="mobile" label="手机" label-width="120px">
-          <el-input v-model="userEditForm.mobile" autocomplete="off"></el-input>
+          <el-input v-model="userEditForm.mobile"></el-input>
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
@@ -103,7 +103,7 @@
     <el-dialog title="分配权限" :visible.sync="dialogFromRights" width="40%">
       <el-form :model="Rightsform">
         <el-form-item label="用户名" label-width="80px">
-          <el-input v-model="Rightsform.username" autocomplete="off" disabled></el-input>
+          <el-input v-model="Rightsform.username" disabled></el-input>
         </el-form-item>
         <el-form-item label="角色列表" label-width="80px">
           <!-- 多选框 v-model双向绑定的值来控制多选框的选中值-->
@@ -143,15 +143,19 @@ export default {
       }, //添加用户规则
       userAddRules: {
         username: [
-          { required: true, message: '用户名为必填项', trigger: 'blur' },
-          { min: 2, max: 5, message: '长度在 2 到 6 个字符', trigger: 'blur' }
+          { required: true, message: '用户名为必填项', trigger: 'change' },
+          { min: 2, max: 5, message: '长度在 2 到 6 个字符', trigger: 'change' }
         ],
         password: [
-          { required: true, message: '密码为必填项', trigger: 'blur' },
-          { min: 3, max: 6, message: '长度在 3 到 6 个字符', trigger: 'blur' }
+          { required: true, message: '密码为必填项', trigger: 'change' },
+          { min: 3, max: 6, message: '长度在 3 到 6 个字符', trigger: 'change' }
         ],
-        email: [{ type: 'email', message: '请输入正确的邮箱格式', trigger: 'change' }],
+        email: [
+          { required: true, message: '请输入邮箱', trigger: 'change' },
+          { type: 'email', message: '请输入正确的邮箱格式', trigger: 'change' }
+        ],
         mobile: [
+          { required: true, message: '请输入电话号码', trigger: 'change' },
           {
             pattern: /^(0|86|17951)?(13[0-9]|15[012356789]|166|17[3678]|18[0-9]|14[57])[0-9]{8}$/,
             message: '手机号码格式不正确',

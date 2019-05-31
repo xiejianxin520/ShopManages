@@ -21,24 +21,24 @@
       <!-- 侧边栏 -->
       <el-aside style="width:150px;height:100%">
         <!-- 
-        default-active 当前激活菜单的 index 值
+        default-active 当前激活菜单的 index 值 与第二菜单相关
         el-submenu 表示一组菜单 el-menu-item表示子菜单  
         template: 用来包裹一级菜单，内部指定菜单的图标和菜单名
         如果要给菜单添加 小图标，应该使用 template 来包裹整个内容
          unique-opened 是否打开一个子菜单
               -->
         <!-- 开启路由配置 :router='true'-->
-        <!-- 第一个菜单，index是标识符而已，不能重复 -->
+        <!-- 第一个菜单，index是标识别，与:default-active相关，不能重复 -->
         <!-- 里面的子菜单index可以绑定路由路径跳转 -->
         <!-- 启用路由模式后，index就相当于 原来 router-link 中的to属性，用来指定导航的路径（哈希值） -->
         <!-- 可以使用 /home/users 或者 home/users -->
-        <el-menu :router='true' :default-active="$route.path" unique-opened class="el-menu-vertical-demo" background-color="#545c64" text-color="#fff" active-text-color="#ffd04b">
+        <el-menu :router='true' :default-active="$route.path.slice(1).split('-')[0]" unique-opened class="el-menu-vertical-demo" background-color="#545c64" text-color="#fff" active-text-color="#ffd04b">
           <el-submenu v-for="menu in menuList" :key="menu.id" :index="menu.path">
             <template slot="title">
               <i class="el-icon-location"></i>
               <span>{{menu.authName}}</span>
             </template>
-            <el-menu-item v-for="item in menu.children" :key="item.id" :index="'/home/'+item.path" class='menuitem'>
+            <el-menu-item v-for="item in menu.children" :key="item.id" :index="item.path" class='menuitem'>
               <template slot="title">
                 <i class="el-icon-menu"></i>
                 <span>{{item.authName}}</span>
@@ -47,7 +47,7 @@
           </el-submenu>
           <!-- 第二个菜单，index唯一 -->
           <!-- 里面的子index可以绑定路由路径跳转 -->
-          <el-submenu index="2">
+          <!-- <el-submenu index="2">
             <template slot="title">
               <i class="el-icon-location"></i>
               <span>权限管理</span>
@@ -64,7 +64,7 @@
                 <span>权限列表</span>
               </template>
             </el-menu-item>
-          </el-submenu>
+          </el-submenu> -->
         </el-menu>
       </el-aside>
       <el-main>

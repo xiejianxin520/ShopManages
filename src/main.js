@@ -8,6 +8,8 @@ import router from './router'
 // 导入全局样式
 import '@/assets/index.css'
 import axios from 'axios'
+// 引入moment
+import moment from 'moment'
 
 Vue.use(ElementUI)
 // 将 axios 添加到Vue的原型中
@@ -35,6 +37,11 @@ axios.interceptors.response.use(function (response) {
     localStorage.removeItem('token')
   }
   return response
+})
+
+//全局定义事件过滤器
+Vue.filter('dataFileter', (input, format = "YYYY-MM-DD  HH:mm:ss") => {
+  return moment(input * 1000).format(format)
 })
 
 Vue.config.productionTip = false

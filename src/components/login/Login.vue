@@ -13,14 +13,14 @@
     <el-col :xs="12" :sm="10" :md="8" :lg="6" :xl="4" class="login-content">
       <el-form label-position="top" :model="ruleForm" :rules="rules" ref="ruleForm" label-width="100px" class="demo-ruleForm">
         <el-form-item label="用户名" prop="username">
-          <el-input v-model="ruleForm.username"></el-input>
+          <el-input placeholder="请输入用户名" v-model="ruleForm.username"></el-input>
         </el-form-item>
         <el-form-item label="密码" prop="password">
-          <el-input show-password v-model="ruleForm.password"></el-input>
+          <el-input @keyup.enter.native="submitForm" show-password v-model="ruleForm.password"></el-input>
         </el-form-item>
         <el-form-item>
-          <el-button type="primary" @click="submitForm('ruleForm')">立即创建</el-button>
-          <el-button @click="resetForm('ruleForm')">重置</el-button>
+          <el-button type="primary" @click="submitForm">立即创建</el-button>
+          <el-button @click="resetForm">重置</el-button>
         </el-form-item>
       </el-form>
     </el-col>
@@ -100,12 +100,11 @@ export default {
 
     //创建
     // ref 用在组件中，就表示当前组件
-    // this.$refs.loginForm
+    // this.$refs.ruleForm
     // valid 表示是否校验成功，如果成功就为：true
     // 如果失败就为：false
-    submitForm(b) {
-      // this.$refs.loginForm
-      this.$refs[b].validate(valid => {
+    submitForm() {
+      this.$refs.ruleForm.validate(valid => {
         if (valid) {
           this.login()
         } else {
@@ -114,8 +113,8 @@ export default {
       })
     },
     //重置
-    resetForm(formName) {
-      this.$refs[formName].resetFields()
+    resetForm() {
+      this.$refs.ruleForm.resetFields()
     }
   },
   components: {}

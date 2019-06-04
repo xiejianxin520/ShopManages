@@ -251,4 +251,41 @@ axios.defaults.baseURL = 'http://localhost:8888/api/private/v1'
 ### 商品管理-准备添加商品的组件
   ~~~js
  :default-active="$route.path.slice(1).split('-')[0]"
-     ~~~
+~~~
+
+### 商品管理-使用了步骤条组件和tabs组件
+- 1. 步骤条组件
+ ~~~html
+        <el-steps :active="active" finish-status="success">
+~~~
+- 2. tabs组件
+ ~~~html
+    <el-tabs >
+      <el-tab-pane label="基本信息">基本信息</el-tab-pane>
+    </el-tabs>
+ ~~~   
+- 3. 商品管理-tabs组件和步骤条组件联动 
+~~~html
+        this.active = +tab.index
+  ~~~  
+- 4. 添加商品的基本信息el-form组件和el-cascader次级选择器
+
+#### 商品管理-下一步功能
+~~~html
+<el-tabs
+      v-model="activeName"
+    >
+ ~~~  
+ 给tabs的每一子项el-tab-pane都执行要给name属性
+
+ #### 商品管理-图片上传
+ - el-upload组件
+ - action：指定图片上传的地址 
+ - headers:设置token 
+
+ - 在成功的时候， handlerSucess需要把上传成功的图片存储到 form中pics中，因为添加商品的时候需要使用
+
+ ### 商品管理-富文本编辑器的使用
+ - vue-quill-editor
+ - 安装 npm install vue-quill-editor
+

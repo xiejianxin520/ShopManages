@@ -10,6 +10,14 @@ import '@/assets/index.css'
 import axios from 'axios'
 // 引入moment
 import moment from 'moment'
+// 导入富文本编辑器
+import VueQuillEditor from 'vue-quill-editor'
+// 导入富文本编辑器的css
+import 'quill/dist/quill.core.css'
+import 'quill/dist/quill.snow.css'
+import 'quill/dist/quill.bubble.css'
+// 把富文本编辑器当成了vue的插件，以后所有的组件中都可以直接使用了
+Vue.use(VueQuillEditor)
 
 Vue.use(ElementUI)
 // 将 axios 添加到Vue的原型中

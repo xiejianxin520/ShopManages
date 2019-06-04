@@ -78,7 +78,7 @@ export default {
 }
 </script>
 
-<style scope>
+<style scoped>
 .btnsty {
   margin: 3px 0 15px;
 }
